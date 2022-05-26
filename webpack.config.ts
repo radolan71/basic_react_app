@@ -2,6 +2,7 @@ import path from "path";
 import { Configuration } from "webpack";
 
 const config: Configuration = {
+  mode: "development",
   entry: "./src/index.tsx",
   module: {
     rules: [
@@ -25,9 +26,10 @@ const config: Configuration = {
     extensions: [".tsx", ".ts", ".js"],
   },
   output: {
-    path: path.resolve(__dirname, "build"),
+    path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
   },
+  stats: "verbose",
   // devServer: {
   //   static: path.join(__dirname, "build"),
   //   compress: true,
