@@ -7,7 +7,8 @@ import { Footer } from "../Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../application/store";
 import { fetchConfig } from "../../../application/config";
-import { isNotRequested } from "../../../helpers/requestHelper";
+import { isLoading, isNotRequested } from "../../../helpers/requestHelper";
+import { Loader } from "../Loader/Loader";
 
 export default function App() {
   const config = useSelector((state: RootState) => state.config);
@@ -19,6 +20,10 @@ export default function App() {
       dispatch(fetchConfig());
     }
   }, []);
+
+  if (isNotRequested(config) || isLoading(config)) {
+    return <Loader />;
+  }
 
   return (
     <React.Fragment>
