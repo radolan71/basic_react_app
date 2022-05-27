@@ -12,9 +12,7 @@ export interface Location {
   created: string;
 }
 
-export const getLocation = async (
-  id: number
-): Promise<RickAndMortyResponse<Location>> => {
+export const getLocation = async (id: number): Promise<Location> => {
   const appConfig = getAppConfig();
   let url = `${appConfig.rickyAndMortyApi}location/${id}`;
   let cacheKey = url;

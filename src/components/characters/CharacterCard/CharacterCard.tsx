@@ -2,14 +2,11 @@ import {
   Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
-  Chip,
   Grid,
   makeStyles,
   Typography,
-  IconButton,
   Badge,
 } from "@material-ui/core";
 import * as React from "react";
@@ -18,10 +15,12 @@ import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import RoomRoundedIcon from "@material-ui/icons/RoomRounded";
 import TvRoundedIcon from "@material-ui/icons/TvRounded";
 import FiberManualRecordRoundedIcon from "@material-ui/icons/FiberManualRecordRounded";
-import { green, red } from "@material-ui/core/colors";
+import { green, grey, red } from "@material-ui/core/colors";
+import { DetailsType } from "../CharacterCardContainer/CharacterCardContainer";
 
 interface CharacterCardProps {
   character: Character;
+  showDetails: (type: DetailsType, id: number[]) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const CharacterCard = ({
   character,
+  showDetails,
 }: CharacterCardProps): React.ReactElement => {
   const classes = useStyles();
 
@@ -52,10 +52,24 @@ export const CharacterCard = ({
       ? { color: green[500] }
       : character.status === "Dead"
       ? { color: red[500] }
-      : {};
+      : { color: grey[500] };
 
   const truncate = (str: string) => {
-    return str.length > 14 ? str.substring(0, 13) + "..." : str;
+    return str.length > 14 ? str.substring(0, 11) + "..." : str;
+  };
+
+  const onShowDetails = (type: DetailsType, id: number) => {
+    if (DetailsType.Location) {
+      showDetails(type, [id]);
+    } else {
+      showDetails(type, extractEpisodeIds(character.episode));
+    }
+  };
+
+  const extractEpisodeIds = (episodes: string[]): number[] => {
+    return episodes
+      .map((ep) => parseInt(ep.split("/").pop() ?? ""))
+      .filter((ep) => ep !== 0);
   };
 
   return (
@@ -76,12 +90,22 @@ export const CharacterCard = ({
               color="primary"
               startIcon={<FiberManualRecordRoundedIcon style={statusStyle} />}
             >
-              {truncate(character.status + " - " + character.species)}
+              {truncate(
+                character.status.replace("Unknown", "UNK") +
+                  " - " +
+                  character.species
+              )}
             </Button>
             <Button
               aria-label="origin"
               color="primary"
               startIcon={<HomeRoundedIcon />}
+              onClick={() =>
+                onShowDetails(
+                  DetailsType.Location,
+                  parseInt(character.origin.url.split("/").pop() ?? "")
+                )
+              }
             >
               {truncate(character.origin.name)}
             </Button>
@@ -89,6 +113,12 @@ export const CharacterCard = ({
               aria-label="location"
               color="primary"
               startIcon={<RoomRoundedIcon />}
+              onClick={() =>
+                onShowDetails(
+                  DetailsType.Location,
+                  parseInt(character.location.url.split("/").pop() ?? "")
+                )
+              }
             >
               {truncate(character.location.name)}
             </Button>
@@ -100,6 +130,7 @@ export const CharacterCard = ({
                   <TvRoundedIcon fontSize="small" />
                 </Badge>
               }
+              onClick={() => onShowDetails(DetailsType.Episodes, character.id)}
             >
               Episodes
             </Button>
