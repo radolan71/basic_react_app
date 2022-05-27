@@ -1,10 +1,7 @@
 import { getAppConfig } from "../../helpers/configHelper";
 import { doRequest } from "../../helpers/requestHelper";
+import { Location } from "./locations";
 
-interface Location {
-  name: string;
-  url: string;
-}
 export interface Character {
   id: number;
   name: string;
@@ -12,32 +9,21 @@ export interface Character {
   species: string;
   type: string;
   gender: string;
-  origin: Location;
-  location: Location;
+  origin: Pick<Location, "name" | "url">;
+  location: Pick<Location, "name" | "url">;
   image: string;
   episode: string[];
   url: string;
   created: string;
 }
 
-interface ResponseMetadata {
-  count: number;
-  pages: number;
-  next?: string;
-  prev?: string;
-}
-
-export interface RickAndMortyResponse<T> {
-  info: ResponseMetadata;
-  results: T[];
-}
-
 export const getCharacters = async (page?: number): Promise<any> => {
   const appConfig = getAppConfig();
   let url = `${appConfig.rickyAndMortyApi}character`;
+  let cacheKey = "";
   if (page) {
-    url += `?page=${page}`;
+    cacheKey = `?page=${page}`;
+    url += cacheKey;
   }
-  console.log(url);
-  return await doRequest("GET", url, null, {});
+  return await doRequest("GET", url, null, { cacheKey: cacheKey });
 };
