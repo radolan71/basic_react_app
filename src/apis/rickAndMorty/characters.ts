@@ -1,10 +1,11 @@
-import { callApi } from "../callApi";
+import { getAppConfig } from "../../helpers/configHelper";
+import { doRequest } from "../../helpers/requestHelper";
 
 interface Location {
   name: string;
   url: string;
 }
-interface Character {
+export interface Character {
   id: Number;
   name: string;
   status: string;
@@ -26,15 +27,16 @@ interface ResponseMetadata {
   prev?: string;
 }
 
-interface RickAndMortyResponse<T> {
+export interface RickAndMortyResponse<T> {
   info: ResponseMetadata;
   results: T[];
 }
 
-export const getCharacters = async (): Promise<any> => {
-  return await callApi(
+export const getCharacters = async (page?: Number): Promise<any> => {
+  const appConfig = getAppConfig();
+  return await doRequest(
     "GET",
-    "https://rickandmortyapi.com/api/character",
+    `${appConfig.rickyAndMortyApi}character`,
     null,
     {}
   );
