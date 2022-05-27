@@ -2,6 +2,7 @@ import { Box, Grid } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import React, { useEffect, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Character } from "../../../apis/rickAndMorty/characters";
 import { fetchCharacters } from "../../../application/rickAndMorty/rickAndMortySlice";
 import { AppDispatch, RootState } from "../../../application/store";
 import { isLoading, isNotRequested } from "../../../helpers/requestHelper";
@@ -47,7 +48,7 @@ export const CharacterCardContainer = (
   return (
     <Grid container spacing={4}>
       {hasResults() &&
-        characters?.payload.results.map((character, idx) => (
+        characters?.payload.results.map((character: Character, idx: number) => (
           <CharacterCard character={character} key={idx} />
         ))}
       {hasResults() && (
