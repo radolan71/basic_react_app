@@ -9,8 +9,8 @@ import { CustomState } from "../store";
 
 export const fetchCharacters = createAsyncThunk(
   "rickAndMorty/fetchCharacters",
-  async () => {
-    const characters = await getCharacters();
+  async (page: number) => {
+    const characters = await getCharacters(page);
     return characters;
   }
 );

@@ -6,7 +6,7 @@ interface Location {
   url: string;
 }
 export interface Character {
-  id: Number;
+  id: number;
   name: string;
   status: string;
   species: string;
@@ -21,8 +21,8 @@ export interface Character {
 }
 
 interface ResponseMetadata {
-  count: Number;
-  pages: Number;
+  count: number;
+  pages: number;
   next?: string;
   prev?: string;
 }
@@ -32,12 +32,12 @@ export interface RickAndMortyResponse<T> {
   results: T[];
 }
 
-export const getCharacters = async (page?: Number): Promise<any> => {
+export const getCharacters = async (page?: number): Promise<any> => {
   const appConfig = getAppConfig();
-  return await doRequest(
-    "GET",
-    `${appConfig.rickyAndMortyApi}character`,
-    null,
-    {}
-  );
+  let url = `${appConfig.rickyAndMortyApi}character`;
+  if (page) {
+    url += `?page=${page}`;
+  }
+  console.log(url);
+  return await doRequest("GET", url, null, {});
 };

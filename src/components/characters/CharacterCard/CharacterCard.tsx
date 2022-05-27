@@ -1,15 +1,19 @@
 import {
+  Box,
   Button,
   Card,
   CardActions,
   CardContent,
+  CardMedia,
+  Chip,
   Grid,
   makeStyles,
   Typography,
 } from "@material-ui/core";
 import * as React from "react";
+import { Character } from "../../../apis/rickAndMorty/characters";
 interface CharacterCardProps {
-  card: any;
+  character: Character;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -30,34 +34,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const CharacterCard = (
-  props: CharacterCardProps
-): React.ReactElement => {
+export const CharacterCard = ({
+  character,
+}: CharacterCardProps): React.ReactElement => {
   const classes = useStyles();
+
   return (
-    <Grid item key={props.card} xs={12} sm={6} md={4}>
-      <Card className={classes.card}>
-        {/* <CardMedia
-            className={classes.cardMedia}
-            image="https://source.unsplash.com/random"
-            title="Image title"
-          /> */}
-        <CardContent className={classes.cardContent}>
-          <Typography gutterBottom variant="h5" component="h2">
-            Heading
-          </Typography>
-          <Typography>
-            This is a media card. You can use this section to describe the
-            content.
-          </Typography>
-        </CardContent>
+    <Grid item key={character.id} xs={6} sm={6} md={3}>
+      <Card>
+        <CardMedia
+          component="img"
+          // sx={{ width: 151 }}
+          image={character.image}
+          alt={character.name}
+        />
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <CardContent>
+            <Typography component="div" variant="h6">
+              {character.name}
+            </Typography>
+            <Typography variant="subtitle1" color="secondary" component="div">
+              {character.species}
+            </Typography>
+            <Chip label={character.status} size="small" />
+          </CardContent>
+        </Box>
         <CardActions>
-          <Button size="small" color="primary">
-            View
-          </Button>
-          <Button size="small" color="primary">
-            Edit
-          </Button>
+          <Button size="small">Details</Button>
         </CardActions>
       </Card>
     </Grid>
