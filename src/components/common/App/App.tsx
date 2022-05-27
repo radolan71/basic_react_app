@@ -9,6 +9,8 @@ import { AppDispatch, RootState } from "../../../application/store";
 import { fetchConfig } from "../../../application/config";
 import { isLoading, isNotRequested } from "../../../helpers/requestHelper";
 import { Loader } from "../Loader/Loader";
+import { ThemeProvider } from "@material-ui/core";
+import { CustomTheme } from "../CustomTheme/CustomTheme";
 
 export default function App() {
   const config = useSelector((state: RootState) => state.config);
@@ -26,13 +28,13 @@ export default function App() {
   }
 
   return (
-    <React.Fragment>
+    <ThemeProvider theme={CustomTheme}>
       <CssBaseline />
       <Header />
       <CustomContainer>
         <CharacterCardContainer />
       </CustomContainer>
       <Footer />
-    </React.Fragment>
+    </ThemeProvider>
   );
 }
