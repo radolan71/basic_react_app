@@ -11,6 +11,7 @@ import { Modal } from "../../common/Modal/Modal";
 import Episodes from "../../Episodes/Episodes";
 import Location from "../../Location/Location";
 import { CharacterCard } from "../CharacterCard/CharacterCard";
+import CharacterDetails from "../CharacterDetails/CharacterDetails";
 interface CharacterCardContainerProps {
   children?: React.ReactElement;
 }
@@ -29,8 +30,9 @@ export const CharacterCardContainer = (
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [detailsType, setDetailsType] = useState(DetailsType.Episodes);
-  const [detailIds, setDetailIds] = useState<number[]>([]);
+  const [currentCharacter, setCurrentCharacter] = useState<Character | null>(
+    null
+  );
   useEffect(() => {
     if (isNotRequested(characters)) {
       dispatch(fetchCharactersByPage(page));
@@ -52,10 +54,9 @@ export const CharacterCardContainer = (
     dispatch(fetchCharactersByPage(page));
   };
 
-  const showDetails = (type: DetailsType, ids: number[]): void => {
-    setDetailsType(type);
+  const showDetails = (character: Character): void => {
     setShowDetailsModal(true);
-    setDetailIds(ids);
+    setCurrentCharacter(character);
   };
 
   const hideDetails = () => {
@@ -68,14 +69,9 @@ export const CharacterCardContainer = (
 
   return (
     <Grid container spacing={4}>
-      {hasResults() && (
+      {hasResults() && currentCharacter && (
         <Modal handleClose={hideDetails} open={showDetailsModal}>
-          <>
-            {detailsType === DetailsType.Location && (
-              <Location locationId={detailIds[0]} title={"Location"} />
-            )}
-            {detailsType === DetailsType.Episodes && <Episodes />}
-          </>
+          <CharacterDetails character={currentCharacter} />
         </Modal>
       )}
       {hasResults() &&
