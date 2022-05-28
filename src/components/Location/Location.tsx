@@ -1,7 +1,12 @@
 import { Box, Typography } from "@material-ui/core";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchResidents } from "../../application/rickAndMorty/rickAndMortySlice";
+import { AppDispatch, RootState } from "../../application/store";
+import { isLoading, isNotRequested } from "../../helpers/requestHelper";
 
 import { useLocation } from "../../hooks/useLocation";
+import { Loader } from "../common/Loader/Loader";
 
 interface LocationProps {
   locationId?: number;
@@ -17,6 +22,40 @@ const Location = ({ locationId, title }: LocationProps): ReactElement => {
     );
   }
   const location = useLocation(locationId);
+  const dispatch: AppDispatch = useDispatch();
+  const residents = useSelector(
+    (state: RootState) => state.rickAndMorty.residents
+  );
+
+  //   useEffect(() => {
+  //     if (isNotRequested(residents)) {
+  //       if (location) {
+  //         const residentIds = location.residents
+  //           .map((r) => parseInt(r.split("/").pop() ?? ""))
+  //           .filter((r) => r !== 0);
+  //         dispatch(fetchResidents({ ids: residentIds, locationId }));
+  //       }
+  //     }
+  //   }, []);
+
+  useEffect(() => {
+    if (isNotRequested(residents) || residents?.locationId !== locationId) {
+      if (location) {
+        const residentIds = location.residents
+          .map((r) => parseInt(r.split("/").pop() ?? ""))
+          .filter((r) => r !== 0);
+        dispatch(fetchResidents({ ids: residentIds, locationId }));
+      }
+    }
+  }, [locationId, location]);
+
+  if (
+    // isLoading(location) ||
+    isNotRequested(residents) ||
+    isLoading(residents)
+  ) {
+    return <Loader />;
+  }
 
   //   TODO get the residents
   return (
@@ -35,7 +74,7 @@ const Location = ({ locationId, title }: LocationProps): ReactElement => {
           <b>Type:</b> {location?.type}
         </Typography>
         <Typography component="p" variant="body1">
-          <b>Residents:</b>
+          <b>Residents ({location?.residents.length}) :</b>
         </Typography>
       </Box>
     </>

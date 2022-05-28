@@ -3,7 +3,7 @@ import { Pagination } from "@material-ui/lab";
 import React, { useEffect, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Character } from "../../../apis/rickAndMorty/characters";
-import { fetchCharacters } from "../../../application/rickAndMorty/rickAndMortySlice";
+import { fetchCharactersByPage } from "../../../application/rickAndMorty/rickAndMortySlice";
 import { AppDispatch, RootState } from "../../../application/store";
 import { isLoading, isNotRequested } from "../../../helpers/requestHelper";
 import { Loader } from "../../common/Loader/Loader";
@@ -33,13 +33,13 @@ export const CharacterCardContainer = (
   const [detailIds, setDetailIds] = useState<number[]>([]);
   useEffect(() => {
     if (isNotRequested(characters)) {
-      dispatch(fetchCharacters(page));
+      dispatch(fetchCharactersByPage(page));
     }
   }, []);
 
   useEffect(() => {
     if (page !== 1) {
-      dispatch(fetchCharacters(page));
+      dispatch(fetchCharactersByPage(page));
     }
   }, [page]);
 
@@ -49,7 +49,7 @@ export const CharacterCardContainer = (
 
   const onPageChange = (event: Record<any, any>, page: number) => {
     setPage(page);
-    dispatch(fetchCharacters(page));
+    dispatch(fetchCharactersByPage(page));
   };
 
   const showDetails = (type: DetailsType, ids: number[]): void => {
@@ -87,15 +87,17 @@ export const CharacterCardContainer = (
           />
         ))}
       {hasResults() && (
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Pagination
-            page={page}
-            count={characters?.payload?.info?.pages ?? 0}
-            variant="outlined"
-            shape="rounded"
-            onChange={onPageChange}
-          />
-        </Box>
+        <Grid item xs={12}>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Pagination
+              page={page}
+              count={characters?.payload?.info?.pages ?? 0}
+              variant="outlined"
+              shape="rounded"
+              onChange={onPageChange}
+            />
+          </Box>
+        </Grid>
       )}
     </Grid>
   );

@@ -1,5 +1,6 @@
 import { getAppConfig } from "../../helpers/configHelper";
 import { doRequest } from "../../helpers/requestHelper";
+import { RickAndMortyResponse } from "./common";
 import { Location } from "./locations";
 
 export interface Character {
@@ -17,7 +18,9 @@ export interface Character {
   created: string;
 }
 
-export const getCharacters = async (page?: number): Promise<any> => {
+export const getCharactersByPage = async (
+  page?: number
+): Promise<RickAndMortyResponse<Character>> => {
   const appConfig = getAppConfig();
   let url = `${appConfig.rickyAndMortyApi}character`;
   let cacheKey = "";
@@ -25,5 +28,14 @@ export const getCharacters = async (page?: number): Promise<any> => {
     cacheKey = `?page=${page}`;
     url += cacheKey;
   }
+  return await doRequest("GET", url, null, { cacheKey: cacheKey });
+};
+
+export const getCharactersByIds = async (
+  ids: number[]
+): Promise<RickAndMortyResponse<Character>> => {
+  const appConfig = getAppConfig();
+  let url = `${appConfig.rickyAndMortyApi}character/${ids.join(",")}`;
+  let cacheKey = "url";
   return await doRequest("GET", url, null, { cacheKey: cacheKey });
 };

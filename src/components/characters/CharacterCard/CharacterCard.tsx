@@ -89,6 +89,7 @@ export const CharacterCard = ({
               aria-label="origin"
               color="primary"
               startIcon={<FiberManualRecordRoundedIcon style={statusStyle} />}
+              disabled
             >
               {truncate(
                 character.status.replace("Unknown", "UNK") +
