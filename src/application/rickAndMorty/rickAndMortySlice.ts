@@ -1,4 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  ActionReducerMapBuilder,
+  AsyncThunk,
+  createAsyncThunk,
+  createSlice,
+} from "@reduxjs/toolkit";
 import {
   Character,
   getCharactersByIds,
@@ -6,7 +11,7 @@ import {
 } from "../../apis/rickAndMorty/characters";
 import { RickAndMortyResponse } from "../../apis/rickAndMorty/common";
 import { getEpisodes } from "../../apis/rickAndMorty/episodes";
-import { getLocation, Location } from "../../apis/rickAndMorty/locations";
+import { getLocation, ShowLocation } from "../../apis/rickAndMorty/locations";
 import { RequestState } from "../../helpers/requestHelper";
 import { CustomState } from "../store";
 
@@ -39,6 +44,14 @@ export const fetchLocation = createAsyncThunk(
   }
 );
 
+export const fetchOrigin = createAsyncThunk(
+  "rickAndMorty/fetchOrigin",
+  async (id: number) => {
+    const origin = await getLocation(id);
+    return origin;
+  }
+);
+
 export const fetchEpisodes = createAsyncThunk(
   "rickAndMorty/fetchEpisodes",
   async (ids: number[]) => {
@@ -47,13 +60,32 @@ export const fetchEpisodes = createAsyncThunk(
   }
 );
 
+const createGenericExtraReducers = (
+  builder: ActionReducerMapBuilder<{}>,
+  thunk: AsyncThunk<any, any, any>,
+  name: string
+): void => {
+  builder.addCase(thunk.pending, (state: any) => {
+    state[name] = state[name] || {};
+    state[name].requestState = RequestState.InProgress;
+  });
+  builder.addCase(thunk.fulfilled, (state: any, action) => {
+    state[name].requestState = RequestState.Finished;
+    state[name].payload = action.payload;
+  });
+  builder.addCase(thunk.rejected, (state: any) => {
+    state[name].requestState = RequestState.Failed;
+  });
+};
+
 interface RickAndMortyState {
   characters?: CustomState<RickAndMortyResponse<Character>>;
-  location?: CustomState<Location>;
+  location?: CustomState<ShowLocation>;
   episodes?: CustomState<Record<any, any>>;
-  residents?: CustomState<RickAndMortyResponse<Character>> & {
-    locationId: number;
-  };
+  origin?: CustomState<ShowLocation>;
+  //   residents?: CustomState<RickAndMortyResponse<Character>> & {
+  //     locationId: number;
+  //   };
 }
 
 export const rickAndMortySlice = createSlice({
@@ -61,53 +93,10 @@ export const rickAndMortySlice = createSlice({
   initialState: {} as RickAndMortyState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchCharactersByPage.pending, (state: any) => {
-      state["characters"] = state["characters"] || {};
-      state["characters"].requestState = RequestState.InProgress;
-    });
-    builder.addCase(fetchCharactersByPage.fulfilled, (state: any, action) => {
-      state["characters"].requestState = RequestState.Finished;
-      state["characters"].payload = action.payload;
-    });
-    builder.addCase(fetchCharactersByPage.rejected, (state: any) => {
-      state["characters"].requestState = RequestState.Failed;
-    });
-
-    builder.addCase(fetchLocation.pending, (state: any) => {
-      state["location"] = state["location"] || {};
-      state["location"].requestState = RequestState.InProgress;
-    });
-    builder.addCase(fetchLocation.fulfilled, (state: any, action) => {
-      state["location"].requestState = RequestState.Finished;
-      state["location"].payload = action.payload;
-    });
-    builder.addCase(fetchLocation.rejected, (state: any) => {
-      state["location"].requestState = RequestState.Failed;
-    });
-
-    builder.addCase(fetchEpisodes.pending, (state: any) => {
-      state["episodes"] = state["episodes"] || {};
-      state["episodes"].requestState = RequestState.InProgress;
-    });
-    builder.addCase(fetchEpisodes.fulfilled, (state: any, action) => {
-      state["episodes"].requestState = RequestState.Finished;
-      state["episodes"].payload = action.payload;
-    });
-    builder.addCase(fetchEpisodes.rejected, (state: any) => {
-      state["episodes"].requestState = RequestState.Failed;
-    });
-
-    builder.addCase(fetchResidents.pending, (state: any) => {
-      state["residents"] = state["residents"] || {};
-      state["residents"].requestState = RequestState.InProgress;
-    });
-    builder.addCase(fetchResidents.fulfilled, (state: any, action) => {
-      state["residents"].requestState = RequestState.Finished;
-      state["residents"].payload = action.payload;
-      state["residents"].payload.locationId = action.meta.arg.locationId;
-    });
-    builder.addCase(fetchResidents.rejected, (state: any) => {
-      state["residents"].requestState = RequestState.Failed;
-    });
+    createGenericExtraReducers(builder, fetchCharactersByPage, "characters");
+    createGenericExtraReducers(builder, fetchLocation, "location");
+    createGenericExtraReducers(builder, fetchOrigin, "origin");
+    createGenericExtraReducers(builder, fetchEpisodes, "episodes");
+    createGenericExtraReducers(builder, fetchResidents, "residents");
   },
 });

@@ -2,7 +2,7 @@ import { getAppConfig } from "../../helpers/configHelper";
 import { doRequest } from "../../helpers/requestHelper";
 import { RickAndMortyResponse } from "./common";
 
-export interface Location {
+export interface ShowLocation {
   name: string;
   url: string;
   id: number;
@@ -12,7 +12,12 @@ export interface Location {
   created: string;
 }
 
-export const getLocation = async (id: number): Promise<Location> => {
+export enum LocationTypes {
+  Origin,
+  Home,
+}
+
+export const getLocation = async (id: number): Promise<ShowLocation> => {
   const appConfig = getAppConfig();
   let url = `${appConfig.rickyAndMortyApi}location/${id}`;
   let cacheKey = url;

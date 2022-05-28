@@ -1,7 +1,7 @@
 import { getAppConfig } from "../../helpers/configHelper";
 import { doRequest } from "../../helpers/requestHelper";
 import { RickAndMortyResponse } from "./common";
-import { Location } from "./locations";
+import { ShowLocation } from "./locations";
 
 export interface Character {
   id: number;
@@ -10,8 +10,8 @@ export interface Character {
   species: string;
   type: string;
   gender: string;
-  origin: Pick<Location, "name" | "url">;
-  location: Pick<Location, "name" | "url">;
+  origin: Pick<ShowLocation, "name" | "url">;
+  location: Pick<ShowLocation, "name" | "url">;
   image: string;
   episode: string[];
   url: string;
