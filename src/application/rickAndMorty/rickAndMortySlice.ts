@@ -56,7 +56,7 @@ export const fetchEpisodes = createAsyncThunk(
   "rickAndMorty/fetchEpisodes",
   async (ids: number[]) => {
     const episodes = await getEpisodes(ids);
-    return episodes;
+    return ids.length > 1 ? episodes : [episodes];
   }
 );
 
