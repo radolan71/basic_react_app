@@ -1,14 +1,8 @@
 import { Box, Typography } from "@material-ui/core";
-import React, { ReactElement, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { ReactElement } from "react";
 import { LocationTypes } from "../../apis/rickAndMorty/locations";
-import { fetchResidents } from "../../application/rickAndMorty/rickAndMortySlice";
-import { AppDispatch, RootState } from "../../application/store";
-import { isLoading, isNotRequested } from "../../helpers/requestHelper";
-
 import { useLocation } from "../../hooks/useLocation";
 import { useOrigin } from "../../hooks/useOrigin";
-import { Loader } from "../common/Loader/Loader";
 
 interface LocationProps {
   locationId: number;
