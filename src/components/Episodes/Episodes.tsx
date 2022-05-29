@@ -36,12 +36,10 @@ const Episodes = ({
     .map((ep) => parseInt(ep.split("/").pop() ?? ""))
     .filter((ep) => ep !== 0);
   const episodes = useCharacterEpisodes(episodeIds, characterId);
-  console.log(episodes);
   if (!episodes || isLoading(episodes) || isNotRequested(episodes)) {
     return <Loader />;
   }
-  //   if (isLoading(episodes))
-  //TODO get episodes
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
