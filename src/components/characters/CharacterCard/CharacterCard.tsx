@@ -1,71 +1,33 @@
 import {
   Box,
-  Button,
   Card,
   CardContent,
   CardMedia,
   Grid,
-  makeStyles,
   Typography,
   Badge,
   CardActionArea,
 } from "@material-ui/core";
 import * as React from "react";
-import { Character } from "../../../apis/rickAndMorty/characters";
+import {
+  Character,
+  CharacterStatusEnum,
+} from "../../../apis/rickAndMorty/characters";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import RoomRoundedIcon from "@material-ui/icons/RoomRounded";
 import TvRoundedIcon from "@material-ui/icons/TvRounded";
-import FiberManualRecordRoundedIcon from "@material-ui/icons/FiberManualRecordRounded";
-import { green, grey, red } from "@material-ui/core/colors";
-
+import AccessibilityNewRoundedIcon from "@material-ui/icons/AccessibilityNewRounded";
+import CharacterStatus from "../CharacterStatus/CharacterStatus";
+import { truncate } from "../../../helpers/stringHelper";
 interface CharacterCardProps {
   character: Character;
   showDetails: (character: Character) => void;
 }
 
-const useStyles = makeStyles((theme) => ({
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  cardMedia: {
-    paddingTop: "56.25%", // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-}));
-
 export const CharacterCard = ({
   character,
   showDetails,
 }: CharacterCardProps): React.ReactElement => {
-  const classes = useStyles();
-
-  const statusStyle =
-    character.status === "Alive"
-      ? { color: green[500] }
-      : character.status === "Dead"
-      ? { color: red[500] }
-      : { color: grey[500] };
-
-  const truncate = (str: string) => {
-    return str.length > 14 ? str.substring(0, 11) + "..." : str;
-  };
-
-  // const onShowDetails = (character: Character) => {
-  //   if (DetailsType.Location) {
-  //     showDetails(type, [id]);
-  //   } else {
-  //     showDetails(type, extractEpisodeIds(character.episode));
-  //   }
-  // };
-
   return (
     <Grid item key={character.id} xs={6} sm={6} md={3}>
       <Card>
@@ -80,59 +42,47 @@ export const CharacterCard = ({
               <Typography component="div" variant="h6">
                 {truncate(character.name)}
               </Typography>
-              <Button
-                aria-label="origin"
-                color="primary"
-                startIcon={<FiberManualRecordRoundedIcon style={statusStyle} />}
-                disabled
-              >
-                {truncate(
-                  character.status.replace("Unknown", "UNK") +
-                    " - " +
-                    character.species
-                )}
-              </Button>
-              <Button
-                aria-label="origin"
-                color="primary"
-                startIcon={<HomeRoundedIcon />}
-                // onClick={() =>
-                //   onShowDetails(
-                //     DetailsType.Location,
-                //     parseInt(character.origin.url.split("/").pop() ?? "")
-                //   )
-                // }
-              >
-                {truncate(character.origin.name)}
-              </Button>
-              <Button
-                aria-label="location"
-                color="primary"
-                startIcon={<RoomRoundedIcon />}
-                // onClick={() =>
-                //   onShowDetails(
-                //     DetailsType.Location,
-                //     parseInt(character.location.url.split("/").pop() ?? "")
-                //   )
-                // }
-              >
-                {truncate(character.location.name)}
-              </Button>
-              <Button
-                aria-label="episodes"
-                color="primary"
-                startIcon={
+              <Grid container spacing={1}>
+                {/* Status */}
+                <Grid container item xs={12}>
+                  <CharacterStatus
+                    status={character.status as CharacterStatusEnum}
+                  />
+                </Grid>
+                {/* Species */}
+                <Grid item xs={3}>
+                  <AccessibilityNewRoundedIcon color="primary" />
+                </Grid>
+                <Grid item xs={9}>
+                  <Typography>{truncate(character.species)}</Typography>
+                </Grid>
+                {/* Origin */}
+                <Grid item xs={3}>
+                  <HomeRoundedIcon color="primary" />
+                </Grid>
+                <Grid item xs={9}>
+                  <Typography>{truncate(character.origin.name)}</Typography>
+                </Grid>
+                {/* Location */}
+                <Grid item xs={3}>
+                  <RoomRoundedIcon color="primary" />
+                </Grid>
+                <Grid item xs={9}>
+                  <Typography>{truncate(character.location.name)}</Typography>
+                </Grid>
+                {/* Episodes */}
+                <Grid item xs={3}>
                   <Badge
                     badgeContent={character.episode.length}
                     color="primary"
                   >
-                    <TvRoundedIcon fontSize="small" />
+                    <TvRoundedIcon fontSize="small" color="primary" />
                   </Badge>
-                }
-                // onClick={() => onShowDetails(DetailsType.Episodes, character.id)}
-              >
-                Episodes
-              </Button>
+                </Grid>
+                <Grid item xs={9}>
+                  <Typography>Episodes</Typography>
+                </Grid>
+              </Grid>
             </CardContent>
           </Box>
         </CardActionArea>

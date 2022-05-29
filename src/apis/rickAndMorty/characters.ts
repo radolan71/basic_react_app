@@ -18,6 +18,11 @@ export interface Character {
   created: string;
 }
 
+export enum CharacterStatusEnum {
+  Alive = "Alive",
+  Dead = "Dead",
+}
+
 export const getCharactersByPage = async (
   page?: number
 ): Promise<RickAndMortyResponse<Character>> => {

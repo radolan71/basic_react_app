@@ -1,10 +1,14 @@
 import { ReactElement } from "react";
 import * as React from "react";
 import { Grid, Typography } from "@material-ui/core";
-import { Character } from "../../../apis/rickAndMorty/characters";
+import {
+  Character,
+  CharacterStatusEnum,
+} from "../../../apis/rickAndMorty/characters";
 import Location from "../../Location/Location";
 import { LocationTypes } from "../../../apis/rickAndMorty/locations";
 import Episodes from "../../Episodes/Episodes";
+import CharacterStatus from "../CharacterStatus/CharacterStatus";
 interface CharacterDetailsProps {
   character: Character;
 }
@@ -26,14 +30,17 @@ const CharacterDetails = ({
       </Grid>
       <Grid item xs={12} sm={12} md={6}>
         <Typography variant="h3">{character.name}</Typography>
+        <Grid container item xs={4}>
+          <CharacterStatus status={character.status as CharacterStatusEnum} />
+        </Grid>
         <Typography variant="body1" component="p">
-          Species: {character.species}
+          <b>Species:</b> {character.species}
         </Typography>
         <Typography variant="body1" component="p">
-          Type: {character.type}
+          <b>Type:</b> {character.type.trim().length ? character.type : "N/A"}
         </Typography>
         <Typography variant="body1" component="p">
-          Gender: {character.gender}
+          <b>Gender:</b> {character.gender}
         </Typography>
       </Grid>
       <Grid item xs={12} sm={12} md={6}>
