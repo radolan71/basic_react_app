@@ -11,6 +11,7 @@ import { isLoading, isNotRequested } from "../../../helpers/requestHelper";
 import { Loader } from "../Loader/Loader";
 import { ThemeProvider } from "@material-ui/core";
 import { CustomTheme } from "../CustomTheme/CustomTheme";
+import { ErrorBoundary } from "../ErrorBoundary/ErrorBoundary";
 
 export default function App() {
   const config = useSelector((state: RootState) => state.config);
@@ -28,13 +29,15 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider theme={CustomTheme}>
-      <CssBaseline />
-      <Header />
-      <CustomContainer>
-        <CharacterCardContainer />
-      </CustomContainer>
-      <Footer />
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider theme={CustomTheme}>
+        <CssBaseline />
+        <Header />
+        <CustomContainer>
+          <CharacterCardContainer />
+        </CustomContainer>
+        <Footer />
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
