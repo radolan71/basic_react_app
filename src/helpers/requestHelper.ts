@@ -1,3 +1,5 @@
+import { NoInfer } from "@reduxjs/toolkit/dist/tsHelpers";
+
 export enum RequestState {
   NotRequested = "NotRequested",
   InProgress = "InProgress",
@@ -30,20 +32,12 @@ const getHeaders = (params: any) => {
   return headers;
 };
 
-/**
- * Caches a Response using the Cache API
- * @async
- * @param string   cacheKey
- * @param string   requestPath
- * @param Response response
- * @param number   cacheDuration
- */
 const cacheResponse = async (
   cacheKey: string,
   requestPath: string,
   response: Response,
   cacheDuration: number
-) => {
+): Promise<void> => {
   // Checks if the browser supports the Cache API
   if (!("caches" in window)) {
     return;
@@ -72,14 +66,10 @@ const cacheResponse = async (
   cache.put(requestPath, new Response(responseBody, cachedResponseFields));
 };
 
-/**
- * Retrieves a response from the cache
- * @async
- * @param  string cacheKey
- * @param  string requestPath
- * @return Response | null
- */
-const getCachedResponse = async (cacheKey: string, requestPath: string) => {
+const getCachedResponse = async (
+  cacheKey: string,
+  requestPath: string
+): Promise<Response | null> => {
   // Checks if the browser supports the Cache API
   if (!("caches" in window)) {
     return null;
@@ -106,16 +96,6 @@ const getCachedResponse = async (cacheKey: string, requestPath: string) => {
   return cachedResponse;
 };
 
-/**
- * Calls the Campaigns Manager API
- * @param  {String} method
- * @param  {String} uri
- * @param  {Object} data
- * @param  {Object} options
- * @param  {Object} options.headers
- *
- * @return {Promise}
- */
 export const doRequest = async (
   method: string,
   uri: string,

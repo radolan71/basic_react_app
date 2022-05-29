@@ -28,12 +28,10 @@ export const getCharactersByPage = async (
 ): Promise<RickAndMortyResponse<Character>> => {
   const appConfig = getAppConfig();
   let url = `${appConfig.rickyAndMortyApi}character`;
-  let cacheKey = "";
   if (page) {
-    cacheKey = `?page=${page}`;
-    url += cacheKey;
+    url += `?page=${page}`;
   }
-  return await doRequest("GET", url, null, { cacheKey: cacheKey });
+  return await doRequest("GET", url, null, { cacheKey: url });
 };
 
 export const getCharactersByIds = async (
@@ -41,6 +39,5 @@ export const getCharactersByIds = async (
 ): Promise<RickAndMortyResponse<Character>> => {
   const appConfig = getAppConfig();
   let url = `${appConfig.rickyAndMortyApi}character/${ids.join(",")}`;
-  let cacheKey = "url";
-  return await doRequest("GET", url, null, { cacheKey: cacheKey });
+  return await doRequest("GET", url, null, { cacheKey: url });
 };

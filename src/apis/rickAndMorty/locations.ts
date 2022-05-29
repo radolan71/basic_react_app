@@ -20,6 +20,5 @@ export enum LocationTypes {
 export const getLocation = async (id: number): Promise<ShowLocation> => {
   const appConfig = getAppConfig();
   let url = `${appConfig.rickyAndMortyApi}location/${id}`;
-  let cacheKey = url;
-  return await doRequest("GET", url, null, { cacheKey: cacheKey });
+  return await doRequest("GET", url, null, { cacheKey: url });
 };

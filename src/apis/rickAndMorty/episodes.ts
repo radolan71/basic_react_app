@@ -17,6 +17,5 @@ export const getEpisodes = async (
 ): Promise<RickAndMortyResponse<Episode>> => {
   const appConfig = getAppConfig();
   let url = `${appConfig.rickyAndMortyApi}episode/${ids.join(",")}`;
-  let cacheKey = url;
-  return await doRequest("GET", url, null, { cacheKey: cacheKey });
+  return await doRequest("GET", url, null, { cacheKey: url });
 };
