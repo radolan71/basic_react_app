@@ -10,7 +10,7 @@ import {
   getCharactersByPage,
 } from "../../apis/rickAndMorty/characters";
 import { RickAndMortyResponse } from "../../apis/rickAndMorty/common";
-import { getEpisodes } from "../../apis/rickAndMorty/episodes";
+import { Episode, getEpisodes } from "../../apis/rickAndMorty/episodes";
 import { getLocation, ShowLocation } from "../../apis/rickAndMorty/locations";
 import { RequestState } from "../../helpers/requestHelper";
 import { CustomState } from "../store";
@@ -81,11 +81,10 @@ const createGenericExtraReducers = (
 interface RickAndMortyState {
   characters?: CustomState<RickAndMortyResponse<Character>>;
   location?: CustomState<ShowLocation>;
-  episodes?: CustomState<Record<any, any>>;
+  episodes?: CustomState<Episode[]> & {
+    characterId: number;
+  };
   origin?: CustomState<ShowLocation>;
-  //   residents?: CustomState<RickAndMortyResponse<Character>> & {
-  //     locationId: number;
-  //   };
 }
 
 export const rickAndMortySlice = createSlice({
