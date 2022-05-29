@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   large: {
     minWidth: theme.spacing(40),
+    width: "800px",
     padding: theme.spacing(6, 8, 5),
     maxHeight: "87%",
   },
