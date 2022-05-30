@@ -35,7 +35,7 @@ const config: Configuration = {
       template: "./public/index.html",
     }),
   ],
-  stats: "verbose",
+  // stats: "verbose",
   // devServer: {
   //   static: path.join(__dirname, "build"),
   //   compress: true,
