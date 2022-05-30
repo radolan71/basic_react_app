@@ -1,4 +1,5 @@
 # Rick & Morty UI
+
 Basic React App consuming https://rickandmortyapi.com as backend.
 
 ## How to run
@@ -33,6 +34,7 @@ The folder strucure used in here is for extendability in mind. For instance cons
 
 ## TODO
 
+[] Unit & Component tests
 [] E2E tests
 [] Implement rendering optimizations using Memo when possible.
 [] Implement Code Splitting to improve first time load.
