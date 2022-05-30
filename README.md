@@ -34,8 +34,8 @@ The folder strucure used in here is for extendability in mind. For instance cons
 
 ## TODO
 
-- [] Unit & Component tests
-- [] E2E tests
-- [] Implement rendering optimizations using Memo when possible.
-- [] Implement Code Splitting to improve first time load.
-- [] Render this on the server side to be able to get better SEO.
+- [ ] Unit & Component tests
+- [ ] E2E tests
+- [ ] Implement rendering optimizations using Memo when possible.
+- [ ] Implement Code Splitting to improve first time load.
+- [ ] Render this on the server side to be able to get better SEO.
