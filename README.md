@@ -9,15 +9,15 @@ Basic React App consuming https://rickandmortyapi.com as backend.
 
 ## Project Checklist
 
-[x] React withouth CRA
-[x] Redux
-[x] Typescript
-[x] eslint
-[x] Material UI
-[x] hooks
-[x] No harcoded API url
-[x] Use Browser Cache API to improve performance.
-[x] Use Error Boundary
+ - [X] React withouth CRA
+ - [X] Redux
+ - [X] Typescript
+ - [X] eslint
+ - [X] Material UI
+ - [X] hooks
+ - [X] No harcoded API url
+ - [X] Use Browser Cache API to improve performance.
+ - [X] Use Error Boundary
 
 ## Folder Strucuture
 
@@ -34,8 +34,8 @@ The folder strucure used in here is for extendability in mind. For instance cons
 
 ## TODO
 
-[] Unit & Component tests
-[] E2E tests
-[] Implement rendering optimizations using Memo when possible.
-[] Implement Code Splitting to improve first time load.
-[] Render this on the server side to be able to get better SEO.
+- [] Unit & Component tests
+- [] E2E tests
+- [] Implement rendering optimizations using Memo when possible.
+- [] Implement Code Splitting to improve first time load.
+- [] Render this on the server side to be able to get better SEO.
